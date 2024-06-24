@@ -1,0 +1,31 @@
+﻿@page
+@model WebApplication1.Pages.ItemsModel
+
+<h2 class="text-center mt-4">Товары</h2>
+
+<div class="container">
+    <div class="row justify-content-center">
+        @foreach (var item in Model.Items)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card shadow-sm">
+                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                    {
+                        <img src="@item.ImagePath" alt="@item.Name" class="card-img-top product-image" />
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@item.Description</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">@item.Price mdl.</span>
+                            <form method="post" asp-page-handler="AddToCart">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">Добавить в корзину</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

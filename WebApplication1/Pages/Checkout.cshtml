@@ -1,0 +1,75 @@
+﻿@page
+@model CheckoutModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h1>Checkout</h1>
+
+<form method="post" id="checkoutForm">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+        <label for="cardHolderName">Card Holder Name</label>
+        <input type="text" class="form-control" id="cardHolderName" name="cardHolderName" required>
+    </div>
+    <div class="form-group">
+        <label for="cardNumber">Card Number</label>
+        <input type="text" class="form-control" id="cardNumber" name="cardNumber" required>
+    </div>
+    <div class="form-group">
+        <label for="cardExpiry">Card Expiry (MM/YY)</label>
+        <input type="text" class="form-control" id="cardExpiry" name="cardExpiry" placeholder="MM/YY" required>
+    </div>
+    <div class="form-group">
+        <label for="cvv">CVV</label>
+        <input type="text" class="form-control" id="cvv" name="cvv" required>
+    </div>
+    <button type="submit" class="btn btn-primary" id="payButton">Pay</button>
+</form>
+
+<div id="paymentMessage" style="display: none;" class="mt-3 alert alert-success">
+    Успешно! Проверьте вашу почту для получения товара.
+</div>
+
+<script>
+
+        document.getElementById("checkoutForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var formData = new FormData(this);
+
+        fetch('/Checkout?handler=ProcessPayment', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById("paymentMessage").style.display = "block";
+            } else {
+                alert('Payment failed. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+        });
+    });
+
+    document.getElementById('cardNumber').addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '').substring(0, 16);
+        value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+        e.target.value = value;
+    });
+
+    document.getElementById('cardExpiry').addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, '').substring(0, 4);
+        if (value.length >= 3) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        e.target.value = value;
+    });
+
+</script>
+

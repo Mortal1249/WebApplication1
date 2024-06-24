@@ -1,0 +1,49 @@
+﻿@page
+@model WebApplication1.Pages.CartModel
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h1>Cart</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Изображение</th>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Действие</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cartItem in Model.CartItems)
+        {
+            <tr>
+                <td>
+                    <img src="@cartItem.ImagePath" alt="@cartItem.Name" class="product-image-small" />
+                </td>
+                <td>@cartItem.Name</td>
+                <td>@cartItem.Description</td>
+                <td>@cartItem.Price</td>
+                <td>
+                    <input type="number" class="form-control quantity-input" value="@cartItem.Quanity" min="1" />
+                </td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="itemId" value="@cartItem.Id" />
+                        <button type="submit" asp-page-handler="RemoveFromCart" class="btn btn-danger">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-between">
+    <form method="post">
+        <button type="submit" asp-page-handler="ClearCart" class="btn btn-warning">Очистить корзину</button>
+    </form>
+    <a asp-page="/Checkout" class="btn btn-primary">Checkout</a>
+</div>

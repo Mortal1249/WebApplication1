@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Market</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding-top: 4rem;
+            background-color: #f8f9fa;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .navbar-toggler {
+            border-color: transparent;
+        }
+
+        .navbar-nav .nav-link {
+            color: #343a40;
+            transition: all 0.3s ease;
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: #007bff;
+            }
+
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand .fa-gamepad {
+            margin-right: 5px;
+        }
+
+        .main-content {
+            margin: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar .nav-item {
+            margin-left: 10px;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Additional styles for authentication links */
+        .auth-links {
+            margin-left: auto;
+        }
+
+            .auth-links .nav-link {
+                color: #343a40;
+            }
+
+                .auth-links .nav-link:hover {
+                    color: #007bff;
+                }
+    </style>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["Message"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+        </div>
+    }
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="#"><i class="fas fa-gamepad"></i> Game Market</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                @if (Context.Session.GetString("Username") != null && Context.Session.GetString("LogOuted") != "True")
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="items"><i class="fas fa-shopping-cart"></i> Товары</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart"><i class="fas fa-shopping-basket"></i> Корзина</a>
+                    </li>
+                }
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                @if (Context.Session.GetString("Username") != null && Context.Session.GetString("LogOuted") != "True")
+                {
+                    @if (Context.Session.GetString("IsAdmin") == "True")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin"><i class="fas fa-cogs"></i> Админ панель</a>
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <form method="post" asp-page="/Logout">
+                            <button type="submit" class="btn btn-link nav-link">Выход</button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="login">Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register">Зарегистрироваться</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <main role="main" class="main-content">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

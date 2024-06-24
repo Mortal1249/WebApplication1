@@ -1,0 +1,24 @@
+﻿@page
+@model WebApplication1.Pages.AddItemModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавление товара</title>
+</head>
+<body>
+    <h1>Добавление товара</h1>
+
+    <form method="post">
+        <div>
+            <label>Название товара:</label>
+            <input type="text" asp-for="NewItem.Name" />
+        </div>
+        <div>
+            <label>Цена товара:</label>
+            <input type="number" asp-for="NewItem.Price" />
+        </div>
+        <button type="submit">Добавить товар</button>
+    </form>
+</body>
+</html>
